@@ -1,0 +1,113 @@
+<div class="employee-root">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">PEOPLE OPERATIONS</p>
+      <h1>Employee directory</h1>
+      <p class="page-description">Manage employee records and keep your team details up to date.</p>
+    </div>
+    <button class="button button-primary" type="button" (click)="getAll()" [disabled]="loading">
+      <span class="button-mark" aria-hidden="true">↓</span>
+      Load all employees
+    </button>
+  </header>
+
+  <section class="lookup-panel" aria-labelledby="lookup-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">FIND A RECORD</p>
+        <h2 id="lookup-title">Look up an employee</h2>
+      </div>
+      <span class="endpoint-tag">GET /api/Employees/&#123;id&#125;</span>
+    </div>
+    <div class="lookup-controls">
+      <label class="field lookup-field">
+        <span>Employee ID</span>
+        <input type="number" [(ngModel)]="idInput" placeholder="e.g. 1042" (keydown.enter)="$event.preventDefault()" />
+      </label>
+      <div *ngIf="deleteError" class="validation-errors" style="margin-left:8px;">
+        {{deleteError}}
+      </div>
+      <button class="button button-secondary" type="button" (click)="getById()" [disabled]="loading">Find employee</button>
+      <button class="button button-danger" type="button" (click)="delete()" [disabled]="loading">Delete record</button>
+    </div>
+  </section>
+
+  <section class="form-grid" aria-label="Create or update employee">
+    <form class="form-panel create-panel" (submit)="$event.preventDefault(); create()">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">NEW RECORD</p>
+          <h2>Add an employee</h2>
+        </div>
+        <span class="method-badge method-post">POST</span>
+      </div>
+      <p class="endpoint-path">/api/Employees</p>
+      <div class="field-grid">
+        <label class="field"><span>First name</span><input placeholder="First name" [(ngModel)]="createModel.firstName" name="createFirstName" /></label>
+        <label class="field"><span>Last name</span><input placeholder="Last name" [(ngModel)]="createModel.lastName" name="createLastName" /></label>
+        <label class="field field-wide"><span>Email address</span><input type="email" placeholder="name@company.com" [(ngModel)]="createModel.email" name="createEmail" /></label>
+      </div>
+      <div *ngIf="createErrors?.length" class="validation-errors">
+        <ul>
+          <li *ngFor="let err of createErrors">{{err}}</li>
+        </ul>
+      </div>
+      <button class="button button-primary form-submit" type="submit" [disabled]="loading">Create employee</button>
+    </form>
+
+    <form class="form-panel update-panel" (submit)="$event.preventDefault(); update()">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">EDIT RECORD</p>
+          <h2>Update an employee</h2>
+        </div>
+        <span class="method-badge method-put">PUT</span>
+      </div>
+      <p class="endpoint-path">/api/Employees/&#123;id&#125;</p>
+      <div class="field-grid">
+        <label class="field"><span>Employee ID</span><input type="number" placeholder="Id" [(ngModel)]="updateModel.id" name="updateId" /></label>
+        <label class="field"><span>First name</span><input placeholder="First name" [(ngModel)]="updateModel.firstName" name="updateFirstName" /></label>
+        <label class="field"><span>Last name</span><input placeholder="Last name" [(ngModel)]="updateModel.lastName" name="updateLastName" /></label>
+        <label class="field field-wide"><span>Email address</span><input type="email" placeholder="name@company.com" [(ngModel)]="updateModel.email" name="updateEmail" /></label>
+      </div>
+      <div *ngIf="updateErrors?.length" class="validation-errors">
+        <ul>
+          <li *ngFor="let err of updateErrors">{{err}}</li>
+        </ul>
+      </div>
+      <button class="button button-secondary form-submit" type="submit" [disabled]="loading">Save changes</button>
+    </form>
+  </section>
+
+  <div *ngIf="message" class="message" role="status">{{message}}</div>
+
+  <section *ngIf="selected" class="result-panel">
+    <div class="section-heading">
+      <div><p class="eyebrow">LOOKUP RESULT</p><h2>Selected employee</h2></div>
+    </div>
+    <pre>{{ selected | json }}</pre>
+  </section>
+
+  <section *ngIf="employees.length" class="directory-panel">
+    <div class="section-heading">
+      <div><p class="eyebrow">DIRECTORY</p><h2>All employees</h2></div>
+      <span class="count-badge">{{employees.length}} records</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Id</th><th>First name</th><th>Last name</th><th>Email</th><th>Salary</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of employees">
+            <td class="id-cell">{{e.id}}</td>
+            <td>{{e.firstName}}</td>
+            <td>{{e.lastName}}</td>
+            <td>{{e.email}}</td>
+            <td>{{e.salary}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

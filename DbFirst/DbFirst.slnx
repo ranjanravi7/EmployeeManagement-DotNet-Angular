@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="DbFirstCore.AngularApp/DbFirstCore.AngularApp.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="DbFirstCore.ConsoleApp/DbFirstCore.ConsoleApp.csproj" />
+  <Project Path="DbFirstCore.DataAccessLayer/DbFirstCore.DataAccessLayer.csproj" />
+  <Project Path="DbFirstCore.WebAPI/DbFirstCore.WebAPI.csproj" />
+</Solution>

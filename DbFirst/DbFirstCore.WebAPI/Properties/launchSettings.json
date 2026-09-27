@@ -1,0 +1,26 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5202",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      // Use HTTP only for the https profile to avoid issues when the dev HTTPS binding
+      // or certificate is not available on this machine. If you want HTTPS locally,
+      // run: dotnet dev-certs https --trust and restore the HTTPS URL here.
+      "applicationUrl": "http://localhost:5202",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
