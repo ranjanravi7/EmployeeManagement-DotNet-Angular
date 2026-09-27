@@ -11,7 +11,9 @@ import { Employee, EmployeeService } from './employee.service';
 })
 export class EmployeeComponent implements OnInit {
   employees: Employee[] = [];
+  searchResults: Employee[] = [];
   selected: Employee | null = null;
+  searchName = '';
   idInput = '';
   createModel: Employee = { firstName: '', lastName: '', email: null } as Employee;
   updateModel: Employee = { firstName: '', lastName: '', email: null } as Employee;
@@ -26,6 +28,16 @@ export class EmployeeComponent implements OnInit {
   ngOnInit(): void {
     // Do not automatically load all employees on component init.
     // Data will be fetched when the user clicks the GET button.
+  }
+
+  search() {
+    this.loading = true;
+    this.message = '';
+    this.searchResults = [];
+    this.svc.search(this.searchName || '').subscribe({
+      next: data => { this.searchResults = data; this.loading = false; try { this.cdr.detectChanges(); } catch { } },
+      error: err => { this.message = err?.message ?? 'Error'; this.loading = false; try { this.cdr.detectChanges(); } catch { } }
+    });
   }
 
   getAll() {

@@ -12,6 +12,26 @@ public class EmployeeRepository : IEmployeeRepository
         _db = db ?? throw new ArgumentNullException(nameof(db));
     }
 
+    public async Task<IEnumerable<Employee>> SearchByNameAsync(string name)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return await GetAllAsync();
+
+            var pattern = $"%{name}%";
+            return await _db.Employees
+                .AsNoTracking()
+                .Where(e => EF.Functions.Like(e.FirstName, pattern) || EF.Functions.Like(e.LastName, pattern))
+                .ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"EmployeeRepository.SearchByNameAsync('{name}') error: {ex}");
+            return Enumerable.Empty<Employee>();
+        }
+    }
+
     public async Task<Employee> CreateAsync(Employee employee)
     {
         _db.Employees.Add(employee);

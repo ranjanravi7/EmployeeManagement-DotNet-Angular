@@ -32,6 +32,24 @@
     </div>
   </section>
 
+  <section class="lookup-panel" aria-labelledby="search-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">SEARCH</p>
+        <h2 id="search-title">Search employees by name</h2>
+      </div>
+      <span class="endpoint-tag">GET /api/Employees/search?name=</span>
+    </div>
+    <div class="lookup-controls">
+      <label class="field lookup-field">
+        <span>Name</span>
+        <input placeholder="First or last name" [(ngModel)]="searchName" (keydown.enter)="$event.preventDefault(); search()" />
+      </label>
+      <button class="button button-primary" type="button" (click)="search()" [disabled]="loading">Search</button>
+      <button class="button button-secondary" type="button" (click)="searchName=''; searchResults=[]" [disabled]="loading">Clear</button>
+    </div>
+  </section>
+
   <section class="form-grid" aria-label="Create or update employee">
     <form class="form-panel create-panel" (submit)="$event.preventDefault(); create()">
       <div class="section-heading">
@@ -77,6 +95,29 @@
       </div>
       <button class="button button-secondary form-submit" type="submit" [disabled]="loading">Save changes</button>
     </form>
+  </section>
+
+  <section *ngIf="searchResults?.length" class="directory-panel">
+    <div class="section-heading">
+      <div><p class="eyebrow">SEARCH RESULTS</p><h2>Matches</h2></div>
+      <span class="count-badge">{{searchResults.length}} records</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Id</th><th>First name</th><th>Last name</th><th>Email</th><th>Salary</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of searchResults">
+            <td class="id-cell">{{e.id}}</td>
+            <td>{{e.firstName}}</td>
+            <td>{{e.lastName}}</td>
+            <td>{{e.email}}</td>
+            <td>{{e.salary}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <div *ngIf="message" class="message" role="status">{{message}}</div>

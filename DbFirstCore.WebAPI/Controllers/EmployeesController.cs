@@ -23,6 +23,13 @@ namespace DbFirstCore.WebAPI.Controllers
             return Ok(items);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string? name)
+        {
+            var results = await _repo.SearchByNameAsync(name ?? string.Empty);
+            return Ok(results);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -74,5 +81,6 @@ namespace DbFirstCore.WebAPI.Controllers
             await _repo.DeleteAsync(id);
             return NoContent();
         }
+
     }
 }

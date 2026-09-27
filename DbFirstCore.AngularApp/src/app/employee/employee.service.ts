@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Employee {
@@ -41,5 +41,10 @@ export class EmployeeService {
 
   delete(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/${id}`, { responseType: 'text' as 'json' });
+  }
+
+  search(name: string): Observable<Employee[]> {
+    const params = new HttpParams().set('name', name ?? '');
+    return this.http.get<Employee[]>(`${this.baseUrl}/search`, { params });
   }
 }
